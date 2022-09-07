@@ -24,7 +24,9 @@ app.UseHttpsRedirection();
 
 app.MapGet("/houses", (HouseDbContext dbContext) =>
 {
-    return dbContext.Houses.ToList();
+    return dbContext.Houses
+        .Select(h => new HouseDto(h.Id, h.Address, h.Country, h.Price))
+        .ToList();
 }).WithName("GetHouses");
 
 app.Run();
