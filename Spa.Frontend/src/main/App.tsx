@@ -4,7 +4,7 @@ import './App.css';
 import Header from './Header';
 import HouseList from '../house/HouseList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HouseDetails from '../house/HouseDetails';
+import HouseDetail from '../house/HouseDetail';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Header subtitle='Providing houses all over the world' />
         <Routes>
           <Route path='/' element={<HouseList />} />
-          <Route path='/house/{id}' element={<HouseDetails />} />
+          <Route path='/house/:id' element={<HouseDetail />} />
           <Route path='*' element={<h1>Not Found</h1>} />
         </Routes>
       </div>
