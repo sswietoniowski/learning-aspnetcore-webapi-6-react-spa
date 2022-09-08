@@ -31,6 +31,20 @@ app.UseHttpsRedirection();
 app.MapGet("/houses", (IHouseRepository houseRepository) =>
 {
     return houseRepository.GetHouses();
-}).WithName("GetHouses");
+}).WithName("GetHouses")
+    .Produces<List<HouseDto>>(StatusCodes.Status200OK);
+
+app.MapGet("/houses/{houseId:int}", async (int houseId, IHouseRepository houseRepository) =>
+{
+    var house = await houseRepository.GetHouse(houseId);
+    if (house == null)
+    {
+        return Results.Problem($"House with ID {houseId} not found", 
+            statusCode: 404);
+    }
+    return Results.Ok(house);
+}).WithName("GetHouse")
+    .ProducesProblem(StatusCodes.Status404NotFound)
+    .Produces<HouseDetailsDto>(StatusCodes.Status200OK);
 
 app.Run();

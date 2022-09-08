@@ -9,6 +9,18 @@ public class HouseRepository : IHouseRepository
         this.dbContext = dbContext;
     }
 
+    public async Task<HouseDetailsDto?> GetHouse(int id)
+    {
+        var house = await dbContext.Houses.FindAsync(id);
+        if (house == null)
+        {
+            return null;
+        }
+        return new HouseDetailsDto(
+            house.Id, house.Address, house.Country, 
+            house.Description, house.Price, house.Photo);
+    }
+
     public async Task<List<HouseDto>> GetHouses()
     {
         return await dbContext.Houses
