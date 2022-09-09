@@ -56,15 +56,15 @@ app.MapPost("/houses", async ([FromBody] HouseDetailsDto houseDto, IHouseReposit
     .ProducesProblem(StatusCodes.Status400BadRequest)
     .Produces<HouseDetailsDto>(StatusCodes.Status201Created);
 
-app.MapPut("/houses/{houseId:int}", async ([FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
+app.MapPut("/houses/{houseId:int}", async (int houseId, [FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
 {
-    var house = await houseRepository.GetHouse(houseDto.Id);
+    var house = await houseRepository.GetHouse(houseId);
     if (house == null)
     {
-        return Results.Problem($"House with ID {houseDto.Id} not found", 
+        return Results.Problem($"House with ID {houseId} not found", 
             statusCode: 404);
     }
-    var updatedHouse = await houseRepository.UpdateHouse(houseDto);
+    var updatedHouse = await houseRepository.UpdateHouse(houseDto with { Id = houseId });
     return Results.Ok(updatedHouse);
 }).WithName("UpdateHouse")
     .ProducesProblem(StatusCodes.Status400BadRequest)
