@@ -51,9 +51,11 @@ const useUpdateHouse = () => {
 const useDeleteHouse = () => {
   const nav = useNavigate();
   const queryClient = useQueryClient();
-  return useMutation<AxiosResponse, AxiosError, number>(
-    (id) =>
-      axios.delete(`${config.baseApiUrl}/houses/${id}`).then((res) => res.data),
+  return useMutation<AxiosResponse, AxiosError, House>(
+    (h) =>
+      axios
+        .delete(`${config.baseApiUrl}/houses/${h.id}`)
+        .then((res) => res.data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('houses');
