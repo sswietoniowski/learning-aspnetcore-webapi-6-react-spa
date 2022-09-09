@@ -29,7 +29,7 @@ const HouseList = () => {
         <tbody>
           {data &&
             data.map((house) => (
-              <tr key={house.id} onClick={() => nav(`/house/${house.id}`)}>
+              <tr key={house.id} onClick={() => nav(`/houses/${house.id}`)}>
                 <td>{house.address}</td>
                 <td>{house.country}</td>
                 <td>{currencyFormatter.format(house.price)}</td>

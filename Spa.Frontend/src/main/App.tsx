@@ -13,7 +13,7 @@ function App() {
         <Header subtitle='Providing houses all over the world' />
         <Routes>
           <Route path='/' element={<HouseList />} />
-          <Route path='/house/:id' element={<HouseDetail />} />
+          <Route path='/houses/:id' element={<HouseDetail />} />
           <Route path='*' element={<h1>Not Found</h1>} />
         </Routes>
       </div>
