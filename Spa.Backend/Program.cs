@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,5 +47,42 @@ app.MapGet("/houses/{houseId:int}", async (int houseId, IHouseRepository houseRe
 }).WithName("GetHouse")
     .ProducesProblem(StatusCodes.Status404NotFound)
     .Produces<HouseDetailsDto>(StatusCodes.Status200OK);
+
+app.MapPost("/houses", async ([FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
+{
+    var createdHouse = await houseRepository.AddHouse(houseDto);
+    return Results.Created($"/houses/{createdHouse.Id}", createdHouse);
+}).WithName("AddHouse")
+    .ProducesProblem(StatusCodes.Status400BadRequest)
+    .Produces<HouseDetailsDto>(StatusCodes.Status201Created);
+
+app.MapPut("/houses/{houseId:int}", async ([FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
+{
+    var house = await houseRepository.GetHouse(houseDto.Id);
+    if (house == null)
+    {
+        return Results.Problem($"House with ID {houseDto.Id} not found", 
+            statusCode: 404);
+    }
+    var updatedHouse = await houseRepository.UpdateHouse(houseDto);
+    return Results.Ok(updatedHouse);
+}).WithName("UpdateHouse")
+    .ProducesProblem(StatusCodes.Status400BadRequest)
+    .ProducesProblem(StatusCodes.Status404NotFound)
+    .Produces<HouseDetailsDto>(StatusCodes.Status200OK);    
+
+app.MapDelete("/houses/{houseId:int}", async (int houseId, IHouseRepository houseRepository) =>
+{
+    var house = await houseRepository.GetHouse(houseId);
+    if (house == null)
+    {
+        return Results.Problem($"House with ID {houseId} not found", 
+            statusCode: 404);
+    }
+    await houseRepository.DeleteHouse(houseId);
+    return Results.NoContent();
+}).WithName("DeleteHouse")
+    .ProducesProblem(StatusCodes.Status404NotFound)
+    .Produces(StatusCodes.Status204NoContent);
 
 app.Run();
