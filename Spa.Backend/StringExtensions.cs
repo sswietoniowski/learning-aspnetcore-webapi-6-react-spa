@@ -9,8 +9,8 @@ public static class StringExtensions
         {
             var bytes = Encoding.UTF8.GetBytes(input);
             var hash = sha.ComputeHash(bytes);
-
-            return Convert.ToBase64String(hash);
+            var sha256 = Convert.ToBase64String(hash);
+            return sha256;
         }
     }
 }
