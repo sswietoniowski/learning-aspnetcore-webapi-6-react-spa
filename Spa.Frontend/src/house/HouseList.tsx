@@ -3,6 +3,7 @@ import ApiStatus from '../ApiStatus';
 import { currencyFormatter } from '../config';
 import useFetchHouses from '../hooks/HouseHooks';
 import useFetchUser from '../hooks/UserHooks';
+import { House } from '../types/house';
 
 const HouseList = () => {
   const nav = useNavigate();
@@ -30,7 +31,7 @@ const HouseList = () => {
         </thead>
         <tbody>
           {data &&
-            data.map((house) => (
+            data.map((house: House) => (
               <tr key={house.id} onClick={() => nav(`/houses/${house.id}`)}>
                 <td>{house.address}</td>
                 <td>{house.country}</td>
