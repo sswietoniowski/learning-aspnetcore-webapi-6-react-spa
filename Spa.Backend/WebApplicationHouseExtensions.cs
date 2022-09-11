@@ -13,7 +13,7 @@ public static class WebApplicationHouseExtensions
             .Produces<List<HouseDto>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized);
 
-        app.MapGet("/houses/{houseId:int}", async (int houseId, IHouseRepository houseRepository) =>
+        app.MapGet("/houses/{houseId:int}", [Authorize]async (int houseId, IHouseRepository houseRepository) =>
         {
             var house = await houseRepository.GetHouse(houseId);
             if (house == null)
@@ -26,7 +26,7 @@ public static class WebApplicationHouseExtensions
             .ProducesProblem(StatusCodes.Status404NotFound)
             .Produces<HouseDetailsDto>(StatusCodes.Status200OK);
 
-        app.MapPost("/houses", async ([FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
+        app.MapPost("/houses", [Authorize]async ([FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
         {
             if (!MiniValidator.TryValidate(houseDto, out var errors))
             {
@@ -39,7 +39,7 @@ public static class WebApplicationHouseExtensions
             .ProducesValidationProblem()
             .Produces<HouseDetailsDto>(StatusCodes.Status201Created);
 
-        app.MapPut("/houses/{houseId:int}", async (int houseId, [FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
+        app.MapPut("/houses/{houseId:int}", [Authorize]async (int houseId, [FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
         {
             if (!MiniValidator.TryValidate(houseDto, out var errors))
             {
@@ -59,7 +59,7 @@ public static class WebApplicationHouseExtensions
             .ProducesProblem(StatusCodes.Status404NotFound)
             .Produces<HouseDetailsDto>(StatusCodes.Status200OK);    
 
-        app.MapDelete("/houses/{houseId:int}", async (int houseId, IHouseRepository houseRepository) =>
+        app.MapDelete("/houses/{houseId:int}", [Authorize]async (int houseId, IHouseRepository houseRepository) =>
         {
             var house = await houseRepository.GetHouse(houseId);
             if (house == null)
