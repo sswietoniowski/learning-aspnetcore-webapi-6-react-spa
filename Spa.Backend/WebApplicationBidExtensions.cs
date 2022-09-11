@@ -13,7 +13,10 @@ public static class WebApplicationBidExtensions
                 return Results.Problem($"House with Id {houseId} not found", statusCode: 404);
             var bids = await bidRepo.GetBid(houseId);
             return Results.Ok(bids);
-        }).ProducesProblem(404).Produces(StatusCodes.Status200OK);
+        })
+            .ProducesProblem(404)
+            .Produces(StatusCodes.Status200OK)
+            .AsBffApiEndpoint();
 
         app.MapPost("/house/{houseId:int}/bids", [Authorize]async (int houseId, [FromBody] BidDto dto, IBidRepository repo) => 
         {   
@@ -24,6 +27,10 @@ public static class WebApplicationBidExtensions
                 return Results.ValidationProblem(errors);
             var newBid = await repo.AddBid(dto);
             return Results.Created($"/houses/{newBid.HouseId}/bids", newBid);
-        }).ProducesValidationProblem().ProducesProblem(400).Produces<BidDto>(StatusCodes.Status201Created);
+        })
+            .ProducesValidationProblem()
+            .ProducesProblem(400)
+            .Produces<BidDto>(StatusCodes.Status201Created)
+            .AsBffApiEndpoint();
     }
 }

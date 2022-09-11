@@ -11,16 +11,47 @@ builder.Services.AddControllersWithViews();
 
 // Cors is not needed for this scenario, but is added to show how to configure it.
 // builder.Services.AddCors();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+
+builder.Services.AddAuthentication(o => 
+{
+    o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = "oidc";
+    o.DefaultSignOutScheme = "oidc";
+})
     .AddCookie(o => 
     {
         o.Cookie.Name = "__Host-spa";
         o.Cookie.SameSite = SameSiteMode.Strict;
+
         o.Events.OnRedirectToLogin = (context) =>
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             return Task.CompletedTask;
         };
+    })
+    .AddOpenIdConnect("oidc", options =>
+    {
+        options.Authority = "https://localhost:4001";
+
+        // confidential client using code flow + PKCE + query response mode
+        options.ClientId = "SpaDemo";
+        options.ClientSecret = "secret"; // should come from configuration, just for the demo purposes!
+        options.ResponseType = "code";
+        options.ResponseMode = "query";
+        options.UsePkce = true;
+
+        options.MapInboundClaims = false;
+        options.GetClaimsFromUserInfoEndpoint = true;
+
+        // save access and refresh token to enable automatic lifetime management
+        options.SaveTokens = true;
+
+        // request scopes
+        options.Scope.Add("Spa.Api.basicAccess");
+        options.Scope.Add("roles");
+
+        // request refresh token
+        options.Scope.Add("offline_access");
     });
 builder.Services.AddAuthorization(options => 
     {
@@ -33,7 +64,6 @@ builder.Services.AddDbContext<HouseDbContext>(options =>
 });
 builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 builder.Services.AddScoped<IBidRepository, BidRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -61,7 +91,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(e => e.MapDefaultControllerRoute());
+app.UseEndpoints(e => e.MapBffManagementEndpoints());
 app.MapFallbackToFile("index.html");
 
 app.Run();
