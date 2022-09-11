@@ -18,4 +18,5 @@ dotnet sln "." add "."
 
 Based on these (free) courses:
 
+- [Understanding OAuth 2.0 & 2.1](https://youtu.be/ikS1gdZQXrc),
 - [Securing API with Duende Server (Identity Server 6)](https://youtu.be/ScapopQurI8).
