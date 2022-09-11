@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+using IdentityModel;
 
 namespace Spa.IdentityProvider;
 
@@ -45,7 +46,7 @@ public static class Config
                     },
                     
                     RedirectUris = {"https://localhost:3000/signin-oidc"},
-                    PostLogoutRedirectUris = {"https://localhost:3000"},
+                    PostLogoutRedirectUris = {"https://localhost:3000/signout-callback-oidc"},
 
                     AllowedScopes =
                     {
@@ -53,6 +54,7 @@ public static class Config
                         "roles",
                         "profile",
                         "Spa.Api.basicAccess",
+                        JwtClaimTypes.Role
                     },
 
                     AlwaysIncludeUserClaimsInIdToken = true,

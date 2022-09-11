@@ -1,4 +1,5 @@
 using Duende.Bff.Yarp;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,8 @@ builder.Services.AddAuthentication(o =>
 
         // request refresh token
         options.Scope.Add("offline_access");
+
+        options.ClaimActions.MapJsonKey("roles", "roles");
     });
 
 var app = builder.Build();
