@@ -7,8 +7,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HouseDetail from '../house/HouseDetail';
 import HouseAdd from '../house/HouseAdd';
 import HouseEdit from '../house/HouseEdit';
+import useLoginUser from '../hooks/UserHooks';
 
 function App() {
+  useLoginUser().mutate({
+    userName: 'admin',
+    password: 'test',
+    rememberLogin: true,
+  });
   return (
     <BrowserRouter>
       <div className='container'>

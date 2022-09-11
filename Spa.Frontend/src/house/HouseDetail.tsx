@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ApiStatus from '../ApiStatus';
 import Bids from '../bids/Bids';
 import { currencyFormatter } from '../config';
@@ -6,6 +6,7 @@ import { useDeleteHouse, useFetchHouse } from '../hooks/HouseHooks';
 import defaultImage from './defaultPhoto';
 
 const HouseDetail = () => {
+  const nav = useNavigate();
   const { id } = useParams();
   if (!id) {
     throw Error('No id provided');
@@ -30,6 +31,7 @@ const HouseDetail = () => {
             className='img-fluid'
             src={data.photo ? data.photo : defaultImage}
             alt='House pic'
+            onClick={() => nav('/')}
           />
         </div>
         <div className='row mt-3'>
