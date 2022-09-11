@@ -44,7 +44,8 @@ app.UseAuthentication();
 
 app.UseCors(p => p.WithOrigins("https://localhost:3000")
     .AllowAnyHeader()
-    .AllowAnyMethod());
+    .AllowAnyMethod()
+    .AllowCredentials());
 
 app.MapHouseEndpoints();
 app.MapBidEndpoints();
