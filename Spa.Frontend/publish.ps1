@@ -1,3 +1,3 @@
 Remove-Item -Path ..\Spa.Backend\wwwroot\static -Force -Recurse
 npm run build
-xcopy build\ ..\Api\wwwroot\ /s /y /q
+xcopy build\ ..\Spa.Backend\wwwroot\ /s /y /q
