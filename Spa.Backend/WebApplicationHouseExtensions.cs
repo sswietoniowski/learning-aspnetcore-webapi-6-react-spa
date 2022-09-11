@@ -37,8 +37,7 @@ public static class WebApplicationHouseExtensions
             return Results.Created($"/houses/{createdHouse.Id}", createdHouse);
         }).WithName("AddHouse")
             .ProducesValidationProblem()
-            .Produces<HouseDetailsDto>(StatusCodes.Status201Created)
-            .AsBffApiEndpoint();
+            .Produces<HouseDetailsDto>(StatusCodes.Status201Created);
 
         app.MapPut("/houses/{houseId:int}", [Authorize("admin")]async (int houseId, [FromBody] HouseDetailsDto houseDto, IHouseRepository houseRepository) =>
         {
@@ -58,8 +57,7 @@ public static class WebApplicationHouseExtensions
         }).WithName("UpdateHouse")
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .Produces<HouseDetailsDto>(StatusCodes.Status200OK)
-            .AsBffApiEndpoint();
+            .Produces<HouseDetailsDto>(StatusCodes.Status200OK);
 
         app.MapDelete("/houses/{houseId:int}", [Authorize("admin")]async (int houseId, IHouseRepository houseRepository) =>
         {
@@ -73,8 +71,6 @@ public static class WebApplicationHouseExtensions
             return Results.NoContent();
         }).WithName("DeleteHouse")
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status204NoContent)
-            .AsBffApiEndpoint();
-
+            .Produces(StatusCodes.Status204NoContent);
     }
 }

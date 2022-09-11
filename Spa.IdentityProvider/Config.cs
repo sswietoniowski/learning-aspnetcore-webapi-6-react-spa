@@ -35,29 +35,15 @@ public static class Config
         {
             new Client
                 {
-                    ClientId = "ExternalApiClient",
+                    ClientId = "WebClient",
+                    ClientName = "External API Client",
                     ClientSecrets =
                     {
                         new Secret("test".Sha256())
                     },
-                    AllowedScopes = {"Spa.Api.basicAccess"},
-                    AllowedGrantTypes = GrantTypes.ClientCredentials
-                },
-
-                // interactive client using code flow + pkce
-                new Client
-                {
-                    ClientId = "MvcClient",
-                    ClientName = "SPA MVC Client",
-                    RequireConsent = true,
-
-                    ClientSecrets =
-                    {
-                        new Secret("test".Sha256())
-                    },
-
-                    RedirectUris = {"https://localhost:4000/signin-oidc"},
-                    PostLogoutRedirectUris = {"https://localhost:4000"},
+                    
+                    RedirectUris = {"https://localhost:3000/signin-oidc"},
+                    PostLogoutRedirectUris = {"https://localhost:3000"},
 
                     AllowedScopes =
                     {
@@ -71,6 +57,6 @@ public static class Config
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     AllowOfflineAccess = true
-                },
+                }
         };
 }

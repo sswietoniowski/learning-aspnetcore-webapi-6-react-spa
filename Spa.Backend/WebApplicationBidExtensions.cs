@@ -15,8 +15,7 @@ public static class WebApplicationBidExtensions
             return Results.Ok(bids);
         })
             .ProducesProblem(404)
-            .Produces(StatusCodes.Status200OK)
-            .AsBffApiEndpoint();
+            .Produces(StatusCodes.Status200OK);
 
         app.MapPost("/house/{houseId:int}/bids", [Authorize]async (int houseId, [FromBody] BidDto dto, IBidRepository repo) => 
         {   
@@ -30,7 +29,6 @@ public static class WebApplicationBidExtensions
         })
             .ProducesValidationProblem()
             .ProducesProblem(400)
-            .Produces<BidDto>(StatusCodes.Status201Created)
-            .AsBffApiEndpoint();
+            .Produces<BidDto>(StatusCodes.Status201Created);
     }
 }
