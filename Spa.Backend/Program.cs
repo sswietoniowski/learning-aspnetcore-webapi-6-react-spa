@@ -45,6 +45,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+app.UseAuthentication();
 
 // Cors is not needed for this scenario, but it is a good practice to have it
 // app.UseCors(p => p.WithOrigins("http://localhost:3000")
@@ -52,13 +53,13 @@ app.UseStaticFiles();
 //     .AllowAnyMethod());
 
 app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapHouseEndpoints();
 app.MapBidEndpoints();
+
+app.UseRouting();
+
+app.UseAuthorization();
 
 app.UseEndpoints(e => e.MapDefaultControllerRoute());
 app.MapFallbackToFile("index.html");
