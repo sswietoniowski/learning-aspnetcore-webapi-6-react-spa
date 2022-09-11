@@ -3,6 +3,7 @@ import ApiStatus from '../ApiStatus';
 import Bids from '../bids/Bids';
 import { currencyFormatter } from '../config';
 import { useDeleteHouse, useFetchHouse } from '../hooks/HouseHooks';
+import useFetchUser from '../hooks/UserHooks';
 import defaultImage from './defaultPhoto';
 
 const HouseDetail = () => {
@@ -14,6 +15,8 @@ const HouseDetail = () => {
   const { data, status, isSuccess } = useFetchHouse(houseId);
 
   const deleteHouseMutation = useDeleteHouse();
+
+  const { data: userClaims } = useFetchUser();
 
   if (!isSuccess) {
     return <ApiStatus status={status} />;
@@ -34,23 +37,33 @@ const HouseDetail = () => {
         </div>
         <div className='row mt-3'>
           <div className='col-2'>
-            <Link
-              className='btn btn-primary w-100'
-              to={`/houses/edit/${data.id}`}
-            >
-              Edit
-            </Link>
+            {userClaims &&
+              userClaims.find(
+                (c) => c.type === 'role' && c.value === 'admin'
+              ) && (
+                <Link
+                  className='btn btn-primary w-100'
+                  to={`/houses/edit/${data.id}`}
+                >
+                  Edit
+                </Link>
+              )}
           </div>
           <div className='col-2'>
-            <button
-              className='btn btn-danger w-100'
-              onClick={() => {
-                if (window.confirm('Are you sure?'))
-                  deleteHouseMutation.mutate(data);
-              }}
-            >
-              Delete
-            </button>
+            {userClaims &&
+              userClaims.find(
+                (c) => c.type === 'role' && c.value === 'admin'
+              ) && (
+                <button
+                  className='btn btn-danger w-100'
+                  onClick={() => {
+                    if (window.confirm('Are you sure?'))
+                      deleteHouseMutation.mutate(data);
+                  }}
+                >
+                  Delete
+                </button>
+              )}
           </div>
         </div>
       </div>

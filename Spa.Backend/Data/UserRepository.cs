@@ -6,7 +6,8 @@ public interface IUserRepository
     {
         private List<UserEntity> users = new()
         {
-            new UserEntity(1, "test", "test", "gray", "admin")
+            new UserEntity(1, "admin", "test", "gray", "admin"),
+            new UserEntity(2, "user", "test", "gray", ""),
         };
 
         public UserEntity? GetByUsernameAndPassword(string username, string password)
