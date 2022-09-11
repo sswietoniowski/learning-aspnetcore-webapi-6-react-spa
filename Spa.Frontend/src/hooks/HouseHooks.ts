@@ -7,7 +7,9 @@ import { Problem } from '../types/problem';
 
 const useFetchHouses = () => {
   return useQuery<House[], AxiosError>('houses', () =>
-    axios.get(`${config.baseApiUrl}/houses`).then((res) => res.data)
+    axios
+      .get(`${config.baseApiUrl}/houses`, { withCredentials: true })
+      .then((res) => res.data)
   );
 };
 

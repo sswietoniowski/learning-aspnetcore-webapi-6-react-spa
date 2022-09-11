@@ -2,10 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import ApiStatus from '../ApiStatus';
 import { currencyFormatter } from '../config';
 import useFetchHouses from '../hooks/HouseHooks';
+import useFetchUser from '../hooks/UserHooks';
 
 const HouseList = () => {
   const nav = useNavigate();
   const { data, status, isSuccess } = useFetchHouses();
+  const { data: userClaims } = useFetchUser();
 
   if (!isSuccess) {
     return <ApiStatus status={status} />;
@@ -37,7 +39,12 @@ const HouseList = () => {
             ))}
         </tbody>
       </table>
-      <Link className="btn btn-primary" to="/houses/add">Add</Link>
+      {userClaims &&
+        userClaims.find((c) => c.type === 'role' && c.value === 'Admin') && (
+          <Link className='btn btn-primary' to='/house/add'>
+            Add
+          </Link>
+        )}
     </div>
   );
 };
