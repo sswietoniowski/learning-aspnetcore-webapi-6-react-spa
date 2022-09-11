@@ -24,7 +24,7 @@ public static class Config
         {
             new ApiResource
             {
-                Name = "Spa.Api",
+                Name = "spaapi",
                 Description = "SPA API",
                 Scopes = new List<string> {"Spa.Api.basicAccess" }
             }
@@ -35,7 +35,7 @@ public static class Config
         {
             new Client
                 {
-                    ClientId = "webClient",
+                    ClientId = "api_client",
                     ClientName = "External API Client",
                     RequireConsent = true,
                     ClientSecrets =

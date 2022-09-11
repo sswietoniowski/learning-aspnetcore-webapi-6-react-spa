@@ -29,7 +29,7 @@ builder.Services.AddAuthentication(o =>
         options.Authority = "https://localhost:4001";
 
         // confidential client using code flow + PKCE + query response mode
-        options.ClientId = "webClient";
+        options.ClientId = "api_client";
         options.ClientSecret = "test";
         options.ResponseType = "code";
         options.ResponseMode = "query";
