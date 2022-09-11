@@ -13,3 +13,9 @@ dotnet new globaljson
 dotnet new sln -o "." --force
 dotnet sln "." add "."
 ```
+
+## Learning Resources
+
+Based on these (free) courses:
+
+- [Securing API with Duende Server (Identity Server 6)](https://youtu.be/ScapopQurI8).

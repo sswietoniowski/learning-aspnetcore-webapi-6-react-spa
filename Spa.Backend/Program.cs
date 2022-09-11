@@ -13,7 +13,7 @@ builder.Services.AddCors();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", o => 
     {
-        o.Authority = "https://localhost:4001/resources";
+        o.Authority = "https://localhost:4001";
         o.Audience = "spaapi";
         o.MapInboundClaims = false;
         // o.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };

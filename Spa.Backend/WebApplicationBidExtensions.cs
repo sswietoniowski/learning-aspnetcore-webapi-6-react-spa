@@ -6,7 +6,7 @@ public static class WebApplicationBidExtensions
 {
     public static void MapBidEndpoints(this WebApplication app)
     {
-        app.MapGet("/house/{houseId:int}/bids", [Authorize]async (int houseId, 
+        app.MapGet("/houses/{houseId:int}/bids", [Authorize]async (int houseId, 
             IHouseRepository houseRepo, IBidRepository bidRepo) =>
         {
             if (await houseRepo.GetHouse(houseId) == null)
@@ -17,7 +17,7 @@ public static class WebApplicationBidExtensions
             .ProducesProblem(404)
             .Produces(StatusCodes.Status200OK);
 
-        app.MapPost("/house/{houseId:int}/bids", [Authorize]async (int houseId, [FromBody] BidDto dto, IBidRepository repo) => 
+        app.MapPost("/houses/{houseId:int}/bids", [Authorize]async (int houseId, [FromBody] BidDto dto, IBidRepository repo) => 
         {   
             if (dto.HouseId != houseId)
                 return Results.Problem($"House Id of DTO {dto.HouseId} doesn't match with URL data {houseId}", 
