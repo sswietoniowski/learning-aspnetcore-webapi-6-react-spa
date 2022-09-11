@@ -13,10 +13,9 @@ const HouseDetail = () => {
   }
   const houseId = parseInt(id);
   const { data, status, isSuccess } = useFetchHouse(houseId);
+  const { data: userClaims, isSuccess: isLoggedIn } = useFetchUser();
 
   const deleteHouseMutation = useDeleteHouse();
-
-  const { data: userClaims } = useFetchUser();
 
   if (!isSuccess) {
     return <ApiStatus status={status} />;
@@ -82,7 +81,7 @@ const HouseDetail = () => {
         <div className='row'>
           <div className='col-12 mt-3'>{data.description}</div>
         </div>
-        <Bids house={data} />
+        {isLoggedIn && <Bids house={data} />}
       </div>
     </div>
   );

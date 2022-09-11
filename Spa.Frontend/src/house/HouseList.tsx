@@ -9,7 +9,7 @@ import { House } from '../types/house';
 const HouseList = () => {
   const nav = useNavigate();
   const { data, status, isSuccess } = useFetchHouses();
-  const { data: userClaims } = useFetchUser();
+  const { data: userClaims, isSuccess: isLoggedIn } = useFetchUser();
 
   if (!isSuccess) {
     return <ApiStatus status={status} />;
