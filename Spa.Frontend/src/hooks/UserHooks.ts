@@ -6,9 +6,7 @@ import { Claim } from '../types/claim';
 const useFetchUser = () => {
   return useQuery<Claim[], AxiosError>('users', () =>
     axios
-      .get(`${config.baseApiUrl}/account/getuser?slide=false`, {
-        withCredentials: true,
-      })
+      .get(`${config.baseApiUrl}/account/getuser?slide=false`)
       .then((res) => res.data)
   );
 };
