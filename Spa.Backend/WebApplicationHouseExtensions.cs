@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniValidation;
 
@@ -5,11 +6,12 @@ public static class WebApplicationHouseExtensions
 {
     public static void MapHouseEndpoints(this WebApplication app)
     {
-        app.MapGet("/houses", (IHouseRepository houseRepository) =>
+        app.MapGet("/houses", [Authorize](IHouseRepository houseRepository) =>
         {
             return houseRepository.GetHouses();
         }).WithName("GetHouses")
-            .Produces<List<HouseDto>>(StatusCodes.Status200OK);
+            .Produces<List<HouseDto>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized);
 
         app.MapGet("/houses/{houseId:int}", async (int houseId, IHouseRepository houseRepository) =>
         {
