@@ -44,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+
 // Cors is not needed for this scenario, but it is a good practice to have it
 // app.UseCors(p => p.WithOrigins("http://localhost:3000")
 //     .AllowAnyHeader()
