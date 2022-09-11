@@ -14,7 +14,11 @@ function App() {
   return (
     <BrowserRouter>
       <div className='container'>
-        {!isSuccess && <a href='/account/login'>Login</a>}
+        {isSuccess ? (
+          <a href='/account/logout'>Logout</a>
+        ) : (
+          <a href='/account/login'>Login</a>
+        )}
         <Header subtitle='Providing houses all over the world' />
         <Routes>
           <Route path='/' element={<HouseList />} />
