@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(o =>
     })
     .AddOpenIdConnect("oidc", options =>
     {
-        options.Authority = "https://localhost:4001";
+        options.Authority = "https://localhost:4001/";
 
         // confidential client using code flow + PKCE + query response mode
         options.ClientId = "api_client";

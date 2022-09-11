@@ -1,5 +1,8 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +13,21 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", o => 
+builder.Services.AddAuthentication(x => {
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(o => 
     {
-        o.Authority = "https://localhost:4001";
+        o.RequireHttpsMetadata = false;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("not_so_secret_key")),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+        o.Authority = "https://localhost:4001/";
         o.Audience = "spaapi";
         o.MapInboundClaims = false;
         // o.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
