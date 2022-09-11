@@ -12,6 +12,9 @@ builder.Services.AddControllersWithViews();
 // Cors is not needed for this scenario, but is added to show how to configure it.
 // builder.Services.AddCors();
 
+builder.Services.AddBff(o => o.ManagementBasePath = "/account")
+    .AddServerSideSessions();
+
 builder.Services.AddAuthentication(o => 
 {
     o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
