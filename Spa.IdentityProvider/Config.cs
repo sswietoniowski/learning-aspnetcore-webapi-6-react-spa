@@ -10,7 +10,7 @@ public static class Config
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
             new IdentityResource(name: "roles", 
-            userClaims: new[] { "role" }, displayName: "Your roles")
+            userClaims: new[] { "admin" }, displayName: "Your roles")
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -26,7 +26,8 @@ public static class Config
             {
                 Name = "spaapi",
                 Description = "SPA API",
-                Scopes = new List<string> {"Spa.Api.basicAccess" }
+                Scopes = new List<string> {"Spa.Api.basicAccess" },
+                UserClaims = new List<string> {"admin"}
             }
         };
 
