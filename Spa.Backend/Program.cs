@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniValidation;
@@ -18,7 +19,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
         return Task.CompletedTask;
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options => 
+    {
+        options.AddPolicy("admin", policy => policy.RequireClaim("role", "admin"));
+    });
 
 builder.Services.AddDbContext<HouseDbContext>(options => 
 {
@@ -43,6 +47,7 @@ if (app.Environment.IsDevelopment())
 //     .AllowAnyMethod());
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -50,7 +55,6 @@ app.UseAuthorization();
 app.MapHouseEndpoints();
 app.MapBidEndpoints();
 
-app.UseRouting();
 app.UseEndpoints(e => e.MapDefaultControllerRoute());
 app.MapFallbackToFile("index.html");
 

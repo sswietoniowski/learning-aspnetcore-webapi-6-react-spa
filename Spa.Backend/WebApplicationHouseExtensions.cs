@@ -6,7 +6,7 @@ public static class WebApplicationHouseExtensions
 {
     public static void MapHouseEndpoints(this WebApplication app)
     {
-        app.MapGet("/houses", [Authorize](IHouseRepository houseRepository) =>
+        app.MapGet("/houses", [Authorize("admin")](IHouseRepository houseRepository) =>
         {
             return houseRepository.GetHouses();
         }).WithName("GetHouses")
