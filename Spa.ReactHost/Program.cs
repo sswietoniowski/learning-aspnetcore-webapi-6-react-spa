@@ -29,8 +29,8 @@ builder.Services.AddAuthentication(o =>
         options.Authority = "https://localhost:4001";
 
         // confidential client using code flow + PKCE + query response mode
-        options.ClientId = "globoweb";
-        options.ClientSecret = "secret";
+        options.ClientId = "webClient";
+        options.ClientSecret = "test";
         options.ResponseType = "code";
         options.ResponseMode = "query";
         options.UsePkce = true;
@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(o =>
         options.SaveTokens = true;
 
         // request scopes
-        options.Scope.Add("globoApi.basicAccess");
+        options.Scope.Add("Spa.Api.basicAccess");
         options.Scope.Add("roles");
 
         // request refresh token

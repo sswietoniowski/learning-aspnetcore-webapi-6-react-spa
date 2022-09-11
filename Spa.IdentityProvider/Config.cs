@@ -35,8 +35,9 @@ public static class Config
         {
             new Client
                 {
-                    ClientId = "WebClient",
+                    ClientId = "webClient",
                     ClientName = "External API Client",
+                    RequireConsent = true,
                     ClientSecrets =
                     {
                         new Secret("test".Sha256())

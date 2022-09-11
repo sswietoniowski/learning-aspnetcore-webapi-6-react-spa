@@ -41,7 +41,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseAuthentication();
 
-app.UseCors(p => p.WithOrigins("http://localhost:3000")
+app.UseCors(p => p.WithOrigins("https://localhost:3000")
     .AllowAnyHeader()
     .AllowAnyMethod());
 
