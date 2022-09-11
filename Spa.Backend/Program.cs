@@ -52,7 +52,7 @@ app.UseAuthentication();
 //     .AllowAnyHeader()
 //     .AllowAnyMethod());
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.MapHouseEndpoints();
 app.MapBidEndpoints();
