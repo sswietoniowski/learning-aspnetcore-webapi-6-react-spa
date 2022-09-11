@@ -9,44 +9,68 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+            new IdentityResource(name: "roles", 
+            userClaims: new[] { "role" }, displayName: "Your roles")
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
         {
-            new ApiScope("scope1"),
-            new ApiScope("scope2"),
+            new ApiScope("Spa.Api.basicAccess", "Basic access to the API")
+        };
+
+    public static IEnumerable<ApiResource> ApiResources =>
+        new ApiResource[]
+        {
+            new ApiResource
+            {
+                Name = "Spa.Api",
+                Description = "SPA API",
+                Scopes = new List<string> {"Spa.Api.basicAccess" }
+            }
         };
 
     public static IEnumerable<Client> Clients =>
         new Client[]
         {
-            // m2m client credentials flow client
             new Client
-            {
-                ClientId = "m2m.client",
-                ClientName = "Client Credentials Client",
+                {
+                    ClientId = "ExternalApiClient",
+                    ClientSecrets =
+                    {
+                        new Secret("test".Sha256())
+                    },
+                    AllowedScopes = {"Spa.Api.basicAccess"},
+                    AllowedGrantTypes = GrantTypes.ClientCredentials
+                },
 
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+                // interactive client using code flow + pkce
+                new Client
+                {
+                    ClientId = "MvcClient",
+                    ClientName = "SPA MVC Client",
+                    RequireConsent = true,
 
-                AllowedScopes = { "scope1" }
-            },
+                    ClientSecrets =
+                    {
+                        new Secret("test".Sha256())
+                    },
 
-            // interactive client using code flow + pkce
-            new Client
-            {
-                ClientId = "interactive",
-                ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
-                    
-                AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = {"https://localhost:4000/signin-oidc"},
+                    PostLogoutRedirectUris = {"https://localhost:4000"},
 
-                RedirectUris = { "https://localhost:44300/signin-oidc" },
-                FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
+                    AllowedScopes =
+                    {
+                        "openid",
+                        "roles",
+                        "profile",
+                        "Spa.Api.basicAccess",
+                    },
 
-                AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "scope2" }
-            },
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    AllowOfflineAccess = true
+                },
         };
 }

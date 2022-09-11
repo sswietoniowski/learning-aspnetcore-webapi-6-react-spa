@@ -11,6 +11,7 @@ const root = ReactDOM.createRoot(
 );
 
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common['x-csrf'] = 1;
 
 const queryClient = new QueryClient();
 
