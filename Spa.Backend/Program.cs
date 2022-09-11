@@ -14,10 +14,15 @@ builder.Services.AddSwaggerGen();
 // Cors is not needed for this scenario, but is added to show how to configure it.
 // builder.Services.AddCors();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(o => o.Events.OnRedirectToLogin = (context) =>
+    .AddCookie(o => 
     {
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-        return Task.CompletedTask;
+        o.Cookie.Name = "__Host-spa";
+        o.Cookie.SameSite = SameSiteMode.Strict;
+        o.Events.OnRedirectToLogin = (context) =>
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        };
     });
 builder.Services.AddAuthorization(options => 
     {

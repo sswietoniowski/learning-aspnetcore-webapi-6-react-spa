@@ -55,7 +55,6 @@ public class AccountController : Controller
         [Authorize]
         public IActionResult GetUser()
         {
-            var options = new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.IgnoreCycles, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            return new JsonResult(User.Claims.Select(c => new { Type=c.Type, Value=c.Value }), options);
+            return new JsonResult(User.Claims.Select(c => new { Type=c.Type, Value=c.Value }));
         }
     }
