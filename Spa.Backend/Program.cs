@@ -16,7 +16,7 @@ builder.Services.AddAuthentication("Bearer")
         o.Authority = "https://localhost:4001";
         o.Audience = "spaapi";
         o.MapInboundClaims = false;
-        o.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+        // o.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
     });
 builder.Services.AddAuthorization(options => 
     {
