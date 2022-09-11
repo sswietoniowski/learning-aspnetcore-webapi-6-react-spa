@@ -31,16 +31,14 @@ const HouseList = () => {
           </tr>
         </thead>
         <tbody>
-          {
-            data && JSON.stringify(data)
-            // data.map((house: House) => (
-            //   <tr key={house.id} onClick={() => nav(`/houses/${house.id}`)}>
-            //     <td>{house.address}</td>
-            //     <td>{house.country}</td>
-            //     <td>{currencyFormatter.format(house.price)}</td>
-            //   </tr>
-            // ))
-          }
+          {data &&
+            data.map((house: House) => (
+              <tr key={house.id} onClick={() => nav(`/houses/${house.id}`)}>
+                <td>{house.address}</td>
+                <td>{house.country}</td>
+                <td>{currencyFormatter.format(house.price)}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {userClaims &&
