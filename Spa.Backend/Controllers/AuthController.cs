@@ -58,6 +58,7 @@ public class AuthController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("")]
     public IActionResult GetUser()
     {
         return new JsonResult(User.Claims.Select(c => new { Type=c.Type, Value=c.Value }));
