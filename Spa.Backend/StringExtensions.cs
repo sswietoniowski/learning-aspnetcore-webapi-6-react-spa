@@ -1,0 +1,16 @@
+using System.Security.Cryptography;
+using System.Text;
+
+public static class StringExtensions
+{
+    public static string Sha256(this string input)
+    {
+        using (var sha = SHA256.Create())
+        {
+            var bytes = Encoding.UTF8.GetBytes(input);
+            var hash = sha.ComputeHash(bytes);
+            var sha256 = Convert.ToBase64String(hash);
+            return sha256;
+        }
+    }
+}

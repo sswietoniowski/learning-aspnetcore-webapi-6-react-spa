@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,52 +11,20 @@ using Microsoft.IdentityModel.Tokens;
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IUserRepository userRepository;
 
-    public class LoginRequestBody
-    {
-        [Required]
-        [MaxLength(64)]
-        public string UserName { get; set; } = string.Empty;
-        [Required]
-        [MaxLength(128)]
-        public string Password { get; set; } = string.Empty;
-    }
-
-    public class CityInfoUser
-    {
-        public int Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-
-        public CityInfoUser(
-            int id, string userName, string firstName, string lastName, string city)
-        {
-            Id = id;
-            UserName = userName;
-            FirstName = firstName;
-            LastName = lastName;
-            City = city;                
-        }
-    }
-
-    public AuthController(IConfiguration configuration)
+    public AuthController(IConfiguration configuration, IUserRepository userRepository)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }        
         
     [HttpOptions("login")]
-    public ActionResult<string> Login(LoginRequestBody request)
+    public ActionResult<string> Login(LoginDto loginDto)
     {
         // Step 1: validate the username/password
-        var user = ValidateUserCredentials(
-            request.UserName, request.Password);
-        
-        if (user is null)
-        {
-            return Unauthorized();
-        }
+        var user = userRepository.GetByUsernameAndPassword(loginDto.UserName, loginDto.Password);
+            if (user == null)
+                return Unauthorized();
 
         // Step 2: create a token
         var securityKey = new SymmetricSecurityKey(
@@ -64,11 +33,13 @@ public class AuthController : ControllerBase
             securityKey, SecurityAlgorithms.HmacSha256);
 
         // The claims that 
-        var claimsForToken = new List<Claim>();
-        claimsForToken.Add(new Claim("sub", user.Id.ToString()));
-        claimsForToken.Add(new Claim("given_name", user.FirstName));
-        claimsForToken.Add(new Claim("family_name", user.LastName));
-        claimsForToken.Add(new Claim("city", user.City));
+        var claimsForToken = new List<Claim>()
+        {
+            new Claim("sub", user.Id.ToString()),
+            new Claim("given_name", user.Name),
+            new Claim("role", user.Role),
+            new Claim("FavoriteColor", user.FavoriteColor)
+        };
 
         var jwtSecurityToken = new JwtSecurityToken(
             issuer: _configuration["Authentication:Issuer"],
@@ -85,10 +56,9 @@ public class AuthController : ControllerBase
         return Accepted(new { Token = tokenToReturn });
     }
 
-    private CityInfoUser ValidateUserCredentials(string username, string password)
+    [Authorize]
+    public IActionResult GetUser()
     {
-        // we're assuming that the credentials are valid (just for the demo purposes)
-        return new CityInfoUser(
-            1, username ?? "", "John", "Doe", "Warsaw");
+        return new JsonResult(User.Claims.Select(c => new { Type=c.Type, Value=c.Value }));
     }
 }

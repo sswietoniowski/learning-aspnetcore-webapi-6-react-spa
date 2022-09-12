@@ -79,6 +79,7 @@ builder.Services.AddDbContext<HouseDbContext>(options =>
 });
 builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 builder.Services.AddScoped<IBidRepository, BidRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
