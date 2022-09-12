@@ -42,7 +42,7 @@ public class AccountController : Controller
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, 
                 new AuthenticationProperties { IsPersistent = model.RememberLogin });
 
-            return Redirect("/");
+            return LocalRedirect("/");
         }
 
         [Authorize]
