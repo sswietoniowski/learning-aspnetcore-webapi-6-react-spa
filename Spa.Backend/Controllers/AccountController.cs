@@ -49,7 +49,7 @@ public class AccountController : Controller
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Redirect("/");
+            return LocalRedirect("/");
         }
 
         [Authorize]
