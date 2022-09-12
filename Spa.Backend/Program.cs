@@ -14,10 +14,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options =>
     {
-        var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+        // var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        // var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
-        options.IncludeXmlComments(xmlCommentsFullPath);
+        // options.IncludeXmlComments(xmlCommentsFullPath);
 
         options.AddSecurityDefinition("CityInfoApiBearerAuth", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
         {
@@ -89,6 +89,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+app.UseAuthentication();
+
 app.UseCors(p => p.WithOrigins("http://localhost:3000")
     .AllowAnyHeader()
     .AllowAnyMethod());
@@ -100,12 +103,9 @@ app.MapBidEndpoints();
 
 app.UseRouting();
 
-app.UseAuthentication(); 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.UseEndpoints(e => e.MapDefaultControllerRoute());
+app.MapFallbackToFile("index.html");
 
 app.Run();
