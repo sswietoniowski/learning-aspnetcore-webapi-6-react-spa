@@ -4,14 +4,8 @@ import config from '../config';
 import { Claim } from '../types/claim';
 
 const useFetchUser = () => {
-  const cfg = {
-    headers: { Authorization: `Bearer ${config.jwtToken}` },
-  };
-
   return useQuery<Claim[], AxiosError>('users', () =>
-    axios
-      .get(`${config.baseApiUrl}/account/getuser`, cfg)
-      .then((res) => res.data)
+    axios.get(`${config.baseApiUrl}/auth`).then((res) => res.data)
   );
 };
 
