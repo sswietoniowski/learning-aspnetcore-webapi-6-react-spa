@@ -18,11 +18,17 @@ const useFetchHouse = (id: number) => {
 };
 
 const useAddHouse = () => {
+  const cfg = {
+    headers: { Authorization: `Bearer ${config.jwtToken}` },
+  };
+
   const nav = useNavigate();
   const queryClient = useQueryClient();
   return useMutation<AxiosResponse, AxiosError<Problem>, House>(
     (house) =>
-      axios.post(`${config.baseApiUrl}/houses`, house).then((res) => res.data),
+      axios
+        .post(`${config.baseApiUrl}/houses`, house, cfg)
+        .then((res) => res.data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('houses');
@@ -33,12 +39,16 @@ const useAddHouse = () => {
 };
 
 const useUpdateHouse = () => {
+  const cfg = {
+    headers: { Authorization: `Bearer ${config.jwtToken}` },
+  };
+
   const nav = useNavigate();
   const queryClient = useQueryClient();
   return useMutation<AxiosResponse, AxiosError<Problem>, House>(
     (house) =>
       axios
-        .put(`${config.baseApiUrl}/houses/${house.id}`, house)
+        .put(`${config.baseApiUrl}/houses/${house.id}`, house, cfg)
         .then((res) => res.data),
     {
       onSuccess: (_, house) => {
@@ -50,12 +60,16 @@ const useUpdateHouse = () => {
 };
 
 const useDeleteHouse = () => {
+  const cfg = {
+    headers: { Authorization: `Bearer ${config.jwtToken}` },
+  };
+
   const nav = useNavigate();
   const queryClient = useQueryClient();
   return useMutation<AxiosResponse, AxiosError, House>(
     (h) =>
       axios
-        .delete(`${config.baseApiUrl}/houses/${h.id}`)
+        .delete(`${config.baseApiUrl}/houses/${h.id}`, cfg)
         .then((res) => res.data),
     {
       onSuccess: () => {

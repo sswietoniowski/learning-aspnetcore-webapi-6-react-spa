@@ -90,7 +90,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles();
+// app.UseStaticFiles();
 app.UseAuthentication();
 
 app.UseCors(p => p.WithOrigins("http://localhost:3000")
@@ -107,6 +107,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseEndpoints(e => e.MapDefaultControllerRoute());
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("/swagger/index.html");
 
 app.Run();
