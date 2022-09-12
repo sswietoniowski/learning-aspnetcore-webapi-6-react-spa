@@ -16,6 +16,7 @@ public class AuthController : ControllerBase
     public AuthController(IConfiguration configuration, IUserRepository userRepository)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
     }        
         
     [HttpOptions("login")]
