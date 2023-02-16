@@ -6,8 +6,8 @@ public interface IUserRepository
     {
         private List<UserEntity> users = new()
         {
-            new UserEntity(1, "admin", "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=", "gray", "admin"),
-            new UserEntity(2, "user", "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=", "black", ""),
+            new UserEntity(1, "admin", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", "gray", "admin"),
+            new UserEntity(2, "user", "BPiZbadjt6lpsQKO4wB1aerzpjVIbdqyEdUSyFud+Ps=", "black", ""),
         };
 
         public UserEntity? GetByUsernameAndPassword(string username, string password)
